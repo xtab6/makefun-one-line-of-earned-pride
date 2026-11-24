@@ -29,6 +29,12 @@ def main() -> None:
     path = os.path.join(out_dir, "entry.txt")
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write(text + "\n")
+    # Read back exactly what the grader will read and fail loudly if
+    # it differs, so a silent short write can never pass as an entry.
+    with open(path, encoding="utf-8") as f:
+        written = f.read()
+    if written != text + "\n":
+        raise SystemExit("entry.txt read-back mismatch")
 
 
 if __name__ == "__main__":
